@@ -16,7 +16,7 @@ class HashTable:
 
     '''
     input: key - integer, pair key;
-    output: value associated to the key, it the key exists in the table
+    output: value associated to the key, if the key exists in the table
             None otherwise
     '''
     def __getitem__(self, key):
