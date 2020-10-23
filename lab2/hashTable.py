@@ -14,14 +14,23 @@ class HashTable:
         self.__length = 0
         self.__table = [None] * start_size
 
-    # getter
+    '''
+    input: key - integer, pair key;
+    output: value associated to the key, it the key exists in the table
+            None otherwise
+    '''
     def __getitem__(self, key):
         hash_key = self.__hash(key)
         if self.__table[hash_key] is None:
             return None
         return self.__table[self.__hash(key)].value
 
-    # setter
+    '''
+    input:  key - integer, pair key;
+            value - value associated to the given key;
+    output: nothing
+    If there is a collision while adding the (key, value) pair a resize is performed
+    '''
     def __setitem__(self, key, value):
         hash_key = self.__hash(key)
         while self.__table[hash_key] is not None:
@@ -30,7 +39,10 @@ class HashTable:
         self.__table[hash_key] = Pair(key, value)
         self.__length += 1
 
-    # hash function
+    '''
+    input:  key - integer, pair key;
+    output: hashed_key - integer, an index in the table;
+    '''
     def __hash(self, key) -> int:
         hash_sum = 0
         for pos, char in enumerate(key):
@@ -51,6 +63,8 @@ class HashTable:
                 newTable[hash_key] = Pair(pair.key, pair.value)
         self.__table = newTable
 
-    # length getter
+    '''
+    getter function for the length of the table
+    '''
     def __len__(self):
         return self.__length
