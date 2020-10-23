@@ -28,16 +28,20 @@ class HashTable:
     '''
     input:  key - integer, pair key;
             value - value associated to the given key;
-    output: nothing
+    output: returns the hashed key (position in the table)
+            if the key already exists in the table an error is thrown
     If there is a collision while adding the (key, value) pair a resize is performed
     '''
     def __setitem__(self, key, value):
         hash_key = self.__hash(key)
         while self.__table[hash_key] is not None:
+            if self.__table[hash_key].key == key:
+                raise Exception("Key already in the table")
             self.__resize()
             hash_key = self.__hash(key)
         self.__table[hash_key] = Pair(key, value)
         self.__length += 1
+        return hash_key
 
     '''
     input:  key - integer, pair key;
