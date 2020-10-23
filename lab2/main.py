@@ -7,8 +7,8 @@ if __name__ == "__main__":
     symbolTable['b'] = 90000
     symbolTable['someVariable'] = 1980
 
-    print(symbolTable['a'])
-    print(symbolTable['b'])
-    print(symbolTable['aaaa'])
-    print(symbolTable['someVariable'])
-    print(len(symbolTable))
+    assert symbolTable['a'] == 800
+    assert symbolTable['b'] == 90000
+    assert symbolTable['aaaa'] is None
+    assert symbolTable['someVariable'] == 1980
+    assert len(symbolTable) == 3
