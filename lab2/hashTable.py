@@ -1,9 +1,3 @@
-class Pair:
-    def __init__(self, key, value):
-        self.key = key
-        self.value = value
-
-
 class HashTable:
     '''
     Open addressing hash table
@@ -23,7 +17,7 @@ class HashTable:
         hash_key = self.__hash(key)
         if self.__table[hash_key] is None:
             return None
-        return self.__table[self.__hash(key)].value
+        return self.__table[self.__hash(key)]
 
     '''
     input:  key - integer, pair key;
@@ -32,14 +26,14 @@ class HashTable:
             if the key already exists in the table an error is thrown
     If there is a collision while adding the (key, value) pair a resize is performed
     '''
-    def __setitem__(self, key, value):
+    def add(self, key):
         hash_key = self.__hash(key)
         while self.__table[hash_key] is not None:
-            if self.__table[hash_key].key == key:
-                raise Exception("Key already in the table")
+            if self.__table[hash_key] == key:
+                return hash_key
             self.__resize()
             hash_key = self.__hash(key)
-        self.__table[hash_key] = Pair(key, value)
+        self.__table[hash_key] = key
         self.__length += 1
         return hash_key
 
@@ -59,12 +53,12 @@ class HashTable:
     def __resize(self):
         self.__size *= 2
         newTable = [None] * self.__size
-        for pair in self.__table:
-            if pair is not None:
-                hash_key = self.__hash(pair.key)
+        for key in self.__table:
+            if key is not None:
+                hash_key = self.__hash(key)
                 if self.__table[hash_key] is not None:
                     self.__resize()
-                newTable[hash_key] = Pair(pair.key, pair.value)
+                newTable[hash_key] = key
         self.__table = newTable
 
     '''
@@ -72,3 +66,10 @@ class HashTable:
     '''
     def __len__(self):
         return self.__length
+
+    def __str__(self):
+        s = ''
+        for index in range(len(self.__table)):
+            if self.__table[index] is not None:
+                s += str(index) + " -> " + str(self.__table[index]) + "\n"
+        return s
