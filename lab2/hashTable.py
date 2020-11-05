@@ -56,7 +56,7 @@ class HashTable:
         for key in self.__table:
             if key is not None:
                 hash_key = self.__hash(key)
-                if self.__table[hash_key] is not None:
+                if newTable[hash_key] is not None:
                     self.__resize()
                 newTable[hash_key] = key
         self.__table = newTable

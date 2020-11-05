@@ -4,28 +4,56 @@ import re
 from lab2.hashTable import HashTable
 
 
-def is_const(_token):
+def is_int(_token):
     try:
         int(_token)
+        if _token[0] == '0' and len(_token) > 1 or _token in ['+0', '-0']:
+            return False
         return True
     except ValueError:
-        # TODO: add case for char and float :D
-        return re.match('^"[a-zA-Z0-9]+"$', _token) is not None
+        return False
+
+
+def is_float(_token):
+    aux = list(_token.split('.'))
+    return is_int(aux[0]) and re.match('^[0-9]+$', aux[1]) is not None
+
+
+string_match = "[a-zA-Z0-9 !@#$%^&*()_-{}\[\]]"
+
+
+def is_char(_token):
+    return re.match("^'" + string_match + "?'$", _token) is not None
+
+
+def is_string(_token):
+    return re.match('^"' + string_match + '*"$', _token) is not None
+
+
+def is_bool(_token):
+    return _token in ['True', 'False']
+
+
+def is_valid_const(_token):
+    return is_int(_token) or is_float(_token) or is_char(_token) or is_string(_token) or is_bool(_token)
 
 
 def is_valid_identifier(_token):
-    return re.match("^[0-9\"']", _token) is None
+    return re.match("^[0-9A-Z\"']", _token) is None
 
 
 reserved = ['int', 'float', 'char', 'string', 'if', 'else', 'while', 'read', 'readInt', 'write', 'writeln']
 ops = ['+', '-', '*', '/', '%', '&&', '||', '==', '!=', '=', '<=', '>=', '<', '>',
        '[', ']', '{', '}', '(', ')', ':', ';',
        ]
+special_chars = " =<>:;!@#$%^&*()_-{}[]/\\'\""
 
 
 def split_line(_line):
     ops_delimiters = '|'.join(map(re.escape, ops))
-    return re.split('(' + ops_delimiters + '|[^"\'a-zA-Z0-9]' + ')', _line)
+
+    return re.split('(' + ops_delimiters + '|^"' + string_match +
+                    '*"$' + "|^'" + string_match + "*'$" + '|[^"\'a-zA-Z0-9.]' + ')', _line)
 
 
 st = HashTable()
@@ -47,7 +75,7 @@ with open(filename) as file:
         for token in tokenized_line:
             if token in reserved or token in ops:
                 pif[token] = -1
-            elif is_const(token) or is_valid_identifier(token):
+            elif is_valid_const(token) or is_valid_identifier(token):
                 index = st.add(token)
                 pif[token] = index
             else:

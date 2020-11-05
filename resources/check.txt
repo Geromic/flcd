@@ -1,0 +1,9 @@
+'a'
+"aaaaa"
+1.1
+''
+""
+1.000001
+True
+"ana are mere"
+'     '
