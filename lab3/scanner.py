@@ -19,7 +19,7 @@ def is_float(_token):
     return is_int(aux[0]) and re.match('^[0-9]+$', aux[1]) is not None
 
 
-string_match = "[a-zA-Z0-9 !@#$%^&*()_-{}\[\]]"
+string_match = "[a-zA-Z0-9 !@#$%^&*()_-{}\\\[\]]"
 
 
 def is_char(_token):
@@ -42,7 +42,7 @@ def is_valid_identifier(_token):
     return re.match("^[0-9A-Z\"']", _token) is None
 
 
-reserved = ['int', 'float', 'char', 'string', 'if', 'else', 'while', 'read', 'readInt', 'write', 'writeln']
+reserved = ['int', 'float', 'char', 'string', 'if', 'else', 'while', 'read', 'readInt', 'print', 'println', 'return']
 ops = ['+', '-', '*', '/', '%', '&&', '||', '==', '!=', '=', '<=', '>=', '<', '>',
        '[', ']', '{', '}', '(', ')', ':', ';',
        ]
