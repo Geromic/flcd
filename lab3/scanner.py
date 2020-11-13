@@ -23,7 +23,7 @@ string_match = "[a-zA-Z0-9 !@#$%^&*()_-{}\\\[\]]"
 
 
 def is_char(_token):
-    return re.match("^'" + string_match + "?'$", _token) is not None
+    return re.match("^'" + string_match + "'$", _token) is not None
 
 
 def is_string(_token):
