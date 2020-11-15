@@ -2,16 +2,18 @@ import sys
 import re
 
 from lab2.hashTable import HashTable
+from lab4.FAParser import FiniteAutomata
 
 
 def is_int(_token):
-    try:
+    return faInt.check_sequence(_token)
+    '''try:
         int(_token)
         if _token[0] == '0' and len(_token) > 1 or _token in ['+0', '-0']:
             return False
         return True
     except ValueError:
-        return False
+        return False'''
 
 
 def is_float(_token):
@@ -55,6 +57,12 @@ def split_line(_line):
     return re.split('(' + ops_delimiters + '|^"' + string_match +
                     '*"$' + "|^'" + string_match + "*'$" + '|[^"\'a-zA-Z0-9.]' + ')', _line)
 
+
+faInt = FiniteAutomata('int.in')
+faString = FiniteAutomata('string.in')
+faChar = FiniteAutomata('char.in')
+faFloat = FiniteAutomata('float.in')
+faBool = FiniteAutomata('bool.in')
 
 st = HashTable()
 pif = {}

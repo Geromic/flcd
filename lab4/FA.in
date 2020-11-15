@@ -3,6 +3,7 @@ p q r
 p
 r
 p a q
+p b q
 q a q
 q b r
 p b r
