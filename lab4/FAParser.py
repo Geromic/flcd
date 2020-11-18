@@ -1,11 +1,10 @@
 class FiniteAutomata:
-    states = []
-    alphabet = []
-    initial = ''
-    final = []
-    transitions = {}
-
     def __init__(self, filename):
+        self.states = []
+        self.alphabet = []
+        self.initial = ''
+        self.final = []
+        self.transitions = {}
         self.__read_file(filename)
 
     def __read_file(self, filename):
@@ -18,12 +17,12 @@ class FiniteAutomata:
         next n lines - transitions (n - no. of transitions)
         '''
         with open(filename, 'r') as file:
-            self.alphabet = file.readline().strip().split(' ')
-            self.states = file.readline().strip().split(' ')
+            self.alphabet = file.readline().strip().split('\\')
+            self.states = file.readline().strip().split('\\')
             self.initial = file.readline().strip()
-            self.final = file.readline().strip().split(' ')
+            self.final = file.readline().strip().split('\\')
             for line in file:
-                transition = line.strip().split(' ')
+                transition = line.strip().split('\\')
                 if (transition[0], transition[1]) not in self.transitions.keys():
                     self.transitions[(transition[0], transition[1])] = [transition[2]]
                 else:
@@ -58,7 +57,7 @@ class FiniteAutomata:
         return current_state in self.final
 
     def check_sequence_wrapper(self):
-        sequence = input("Give a sequence: ").strip().split(' ')
+        sequence = list(input("Give a sequence: "))
         if len(sequence) == 0:
             print("Empty sequence not allowed")
             return
@@ -95,7 +94,3 @@ class FiniteAutomata:
                     break
             except ValueError:
                 print("Invalid format!")
-
-
-fa = FiniteAutomata("FA.in")
-fa.run()

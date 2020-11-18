@@ -4,36 +4,34 @@ import re
 from lab2.hashTable import HashTable
 from lab4.FAParser import FiniteAutomata
 
+faInt = FiniteAutomata('../resources/automatas/int.in')
+faString = FiniteAutomata('../resources/automatas/string.in')
+faChar = FiniteAutomata('../resources/automatas/char.in')
+faFloat = FiniteAutomata('../resources/automatas/float.in')
+faBool = FiniteAutomata('../resources/automatas/bool.in')
+
+assert faChar.check_sequence(["'", "a", "'"]) is True
+
 
 def is_int(_token):
-    return faInt.check_sequence(_token)
-    '''try:
-        int(_token)
-        if _token[0] == '0' and len(_token) > 1 or _token in ['+0', '-0']:
-            return False
-        return True
-    except ValueError:
-        return False'''
+    return faInt.check_sequence(list(_token))
 
 
 def is_float(_token):
-    aux = list(_token.split('.'))
-    return is_int(aux[0]) and re.match('^[0-9]+$', aux[1]) is not None
-
-
-string_match = "[a-zA-Z0-9 !@#$%^&*()_-{}\\\[\]]"
+    return faFloat.check_sequence(list(_token))
 
 
 def is_char(_token):
-    return re.match("^'" + string_match + "'$", _token) is not None
+    print(list(_token))
+    return faChar.check_sequence(list(_token))
 
 
 def is_string(_token):
-    return re.match('^"' + string_match + '*"$', _token) is not None
+    return faString.check_sequence(list(_token))
 
 
 def is_bool(_token):
-    return _token in ['True', 'False']
+    return faBool.check_sequence([_token])
 
 
 def is_valid_const(_token):
@@ -43,6 +41,8 @@ def is_valid_const(_token):
 def is_valid_identifier(_token):
     return re.match("^[0-9A-Z\"']", _token) is None
 
+
+string_match = "[a-zA-Z0-9 !@#$%^&*()_-{}\\\[\]]"
 
 reserved = ['int', 'float', 'char', 'string', 'if', 'else', 'while', 'read', 'readInt', 'print', 'println', 'return']
 ops = ['+', '-', '*', '/', '%', '&&', '||', '==', '!=', '=', '<=', '>=', '<', '>',
@@ -57,12 +57,6 @@ def split_line(_line):
     return re.split('(' + ops_delimiters + '|^"' + string_match +
                     '*"$' + "|^'" + string_match + "*'$" + '|[^"\'a-zA-Z0-9.]' + ')', _line)
 
-
-faInt = FiniteAutomata('int.in')
-faString = FiniteAutomata('string.in')
-faChar = FiniteAutomata('char.in')
-faFloat = FiniteAutomata('float.in')
-faBool = FiniteAutomata('bool.in')
 
 st = HashTable()
 pif = {}
@@ -87,7 +81,7 @@ with open(filename) as file:
                 index = st.add(token)
                 pif[token] = index
             else:
-                raise Exception("Lexical error on line {}; Invalid token '{}'".format(lineNr, token))
+                raise Exception("Lexical error on line {}; Invalid token {}".format(lineNr, token))
 
         line = file.readline()
         lineNr += 1
