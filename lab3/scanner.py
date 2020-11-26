@@ -10,8 +10,6 @@ faChar = FiniteAutomata('../resources/automatas/char.in')
 faFloat = FiniteAutomata('../resources/automatas/float.in')
 faBool = FiniteAutomata('../resources/automatas/bool.in')
 
-assert faChar.check_sequence(["'", "a", "'"]) is True
-
 
 def is_int(_token):
     return faInt.check_sequence(list(_token))
