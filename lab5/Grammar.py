@@ -1,47 +1,45 @@
+from lab5.Production import Production
+
 
 class Grammar:
     def __init__(self, filepath):
         '''
         Structure:
             -1st line: space separated non-terminals (N)
-            -2nd line: space separated terminals ()
+            -2nd line: space separated terminals (T)
             -3rd line: start (S)
-            -next n lines: productions
+            -next N lines: productions
         '''
-        self.nonTerminals = []
-        self.terminals = []
-        self.productions = {}
-        self.start = None
+        self.__nonTerminals = []
+        self.__terminals = []
+        self.__productions = []
+        self.__start = None
         self.__readFromFile(filepath)
-        pass
 
-    def print_terminals(self):
-        print(self.terminals)
+    def getStartSymbol(self):
+        return self.__start
 
-    def print_non_terminals(self):
-        print(self.nonTerminals)
+    def getTerminals(self):
+        return self.__terminals
 
-    def print_productions(self):
-        print(self.productions)
+    def getNonTerminals(self):
+        return self.__nonTerminals
 
-    def print_production_for_non_terminal(self, nonTerm):
-        print(self.productions[nonTerm])
+    def getProductions(self):
+        return self.__productions
+
+    def getProdForNT(self, nonTerm):
+        return list(filter(lambda x: x.getLeftSide() == nonTerm, self.__productions))
 
     def __readFromFile(self, filepath):
         with open(filepath, 'r') as file:
-            self.nonTerminals = file.readline().strip().split('\\')
-            self.terminals = file.readline().strip().split('\\')
-            self.start = file.readline().strip()
+            self.__nonTerminals = file.readline().strip().split(' ')
+            self.__terminals = file.readline().strip().split(' ')
+            self.__start = file.readline().strip()
             for line in file:
-                production = line.strip().split('\\')
+                production = line.strip().split(' ')
                 key = production[0].strip()
-                values = list(production[1].strip().split('|'))
-                self.productions[key] = values
+                values = list(production[2].strip().split('|'))
+                for value in values:
+                    self.__productions.append(Production(key, list(value)))
         file.close()
-
-
-grammarParser = Grammar("../resources/grammars/g1.txt")
-grammarParser.print_non_terminals()
-grammarParser.print_terminals()
-grammarParser.print_productions()
-grammarParser.print_production_for_non_terminal("S")
