@@ -1,0 +1,15 @@
+p2(): int {
+    a: int = readInt();
+    b: int = readInt();
+    c: int = readInt();
+
+    if (a <= b && a <= c) {
+        return a;
+    }
+
+    if (b <= c) {
+        return b;
+    }
+
+    return c;
+}

@@ -68,18 +68,19 @@ class RDParser:
                                 state.input_stack = [last_production[0]] + state.input_stack
                             else:
                                 state.input_stack = [last_production[0]] + state.input_stack[
-                                                                            len(last_production[1]):]
+                                                                           len(last_production[1]):]
 
-        prod_rules = []
         if state.type == StateType.ERROR:
             return False, []
         else:
+            prod_rules = []
+
             for prod in state.work_stack:
                 if len(prod) > 1:
                     if Production(prod[0], prod[1]) in self.__grammar.getProductions():
                         prod_rules.append(prod)
 
-        return True, prod_rules
+            return True, prod_rules
 
 
 g = Grammar("../resources/grammars/g1.txt")
